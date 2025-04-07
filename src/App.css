@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-bee: #FEC800;
+  --color-midnight: #0f0f0f;
+  --color-eggshell: #F6F3F0;
+  --color-react: #58C4DC;
+  --font-step: "Stepalange Short", sans-serif; 
+  --font-jet: "JetBrainsMono", sans-serif; 
+}
+
+@font-face {
+  font-family: 'Stepalange';
+  src: url(/fonts/StepalangeShort.otf) format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'JetBrainsMono';
+  src: url(/fonts/JetBrainsMono.ttf) format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.dark {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
