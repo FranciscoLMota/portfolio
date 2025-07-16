@@ -32,7 +32,7 @@ export function Navbar({ darkMode, setDarkMode} : navProps) {
                   className="text-xl font-bold font-heading transition-colors duration-500 "
                   href="#"
                 >
-                  Francisco Mota
+                  Francisco L. Mota
                 </a>
                 <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12"></ul>
 

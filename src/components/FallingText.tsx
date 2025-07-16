@@ -1,0 +1,218 @@
+import { useEffect, useRef, useState } from "react";
+import { FontLoader } from './lib/three/loaders/FontLoader'
+import { TextGeometry } from './lib/three/geometries/TextGeometry'
+import { Scene, PerspectiveCamera, OrthographicCamera, WebGLRenderer, LineBasicMaterial, LineSegments, EdgesGeometry, BoxGeometry, Mesh, MeshPhongMaterial } from "three";
+import { Font } from "three/examples/jsm/Addons.js";
+import * as CANNON from 'cannon-es';
+import * as THREE from 'three';
+
+interface cubeProps {
+  darkMode: boolean;
+}
+
+
+export function FallingText({ darkMode }: cubeProps) {
+  const containerRef = useRef(null);
+  const regMaterialRef = useRef(null);
+
+  useEffect(() => {
+    const mouse = { x: 0, y: 0 };
+
+    const onMouseMove = (event: MouseEvent) => {
+      const rect = containerRef.current.getBoundingClientRect();
+      mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    };
+
+    window.addEventListener('mousemove', onMouseMove);
+
+
+    const loader = new FontLoader();
+
+    loader.load('/src/fonts/JetBrainsMono_Regular.json', function (font: Font) {
+
+
+
+      const container = containerRef.current;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      const scene = new Scene();
+      const aspect = width / height;
+      const frustumSize = 15; // You can adjust this to zoom in/out
+
+      const camera = new OrthographicCamera(
+        (-frustumSize * aspect) / 2,  // left
+        (frustumSize * aspect) / 2,   // right
+        frustumSize / 2,              // top
+        -frustumSize / 2,             // bottom
+        1,                            // near
+        1000                          // far
+      );
+
+
+      camera.position.set(0, 0, 10);
+      camera.lookAt(0, 0, 0);
+
+      const renderer = new WebGLRenderer({ antialias: false, alpha: true });
+      renderer.setClearColor(0x000000, 0); // 0 alpha = fully transparent
+      renderer.setSize(width, height);
+
+      container.appendChild(renderer.domElement);
+
+      const regMaterial = new LineBasicMaterial({
+        color: darkMode ? 0xffffff : 0x0f0f0f,
+      });
+      regMaterialRef.current = regMaterial;
+
+      // Physics world setup
+      const world = new CANNON.World({
+        gravity: new CANNON.Vec3(0, -9.82, 0),
+      });
+
+      // Invisible ground plane
+      const groundBody = new CANNON.Body({
+        type: CANNON.Body.STATIC,
+        shape: new CANNON.Plane(),
+      });
+      world.addBody(groundBody);
+
+      // Align ground to be horizontal at y = -5
+      groundBody.position.set(0, -9, 0);
+      groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
+      const mouseRadius = 1.5;
+      const mouseBody = new CANNON.Body({
+        mass: 0,
+        type: CANNON.Body.KINEMATIC, // moves, but isn't affected by forces
+        shape: new CANNON.Sphere(mouseRadius),
+      });
+      world.addBody(mouseBody);
+
+      const viewWidth = frustumSize * aspect;
+      const viewHeight = frustumSize * 1.5;
+
+      const text = "ABCDEFGHIJKLMNOPQRSTUVXYZ".split('');
+      const meshes: LineSegments[] = [];
+      const bodies: CANNON.Body[] = [];
+
+      let letterIndex = 0;
+
+      // Use the first character to get bounding box size
+      const tempGeo = new TextGeometry("F", {
+        font,
+        size: 3,
+        height: 0.2,
+      });
+      tempGeo.computeBoundingBox();
+      const tempSize = tempGeo.boundingBox!.getSize(new THREE.Vector3());
+      const letterWidth = tempSize.x;
+      const letterHeight = tempSize.y;
+
+      const cols = Math.floor(viewWidth / letterWidth);
+      const rows = Math.floor(viewHeight / letterHeight);
+
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          const char = text[letterIndex % text.length];
+          letterIndex++;
+
+          const textGeo = new TextGeometry(char, {
+            font: font,
+            size: 3,
+            height: 0.2,
+          });
+          textGeo.computeBoundingBox();
+          const bbox = textGeo.boundingBox;
+          if (!bbox) continue;
+
+          const size = bbox.getSize(new THREE.Vector3());
+          const edges = new EdgesGeometry(textGeo);
+          const mesh = new LineSegments(edges, regMaterial);
+
+          const x = -viewWidth / 2 + col * size.x + size.x / 2;
+          const y = viewHeight / 2 + row * size.y + size.y / 2 + Math.random() * 2;
+
+          mesh.position.set(x, y, 0);
+          scene.add(mesh);
+          meshes.push(mesh);
+
+          const shape = new CANNON.Box(
+            new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2)
+          );
+
+          const body = new CANNON.Body({
+            mass: 1,
+            shape,
+            position: new CANNON.Vec3(x, y, 0),
+          });
+
+          // Lock rotation and Z movement
+          body.angularFactor.set(0, 0, 0);
+          body.linearFactor.set(1, 1, 0);  // Lock Z axis movement
+          body.angularDamping = 1;
+
+          world.addBody(body);
+          bodies.push(body);
+        }
+      }
+
+
+      const animate = () => {
+        requestAnimationFrame(animate);
+
+        world.step(1 / 60);
+
+        // Sync mesh positions with physics bodies
+        for (let i = 0; i < meshes.length; i++) {
+          meshes[i].position.copy(bodies[i].position as unknown as Vector3);
+          meshes[i].quaternion.copy(bodies[i].quaternion as unknown as THREE.Quaternion);
+        }
+
+        // Convert NDC mouse.x/y to world coords
+        const xWorld = (mouse.x * viewWidth) / 2;
+        const yWorld = (mouse.y * viewHeight) / 2;
+
+        // Move the mouseBody to that world position
+        mouseBody.position.set(xWorld, yWorld, 0);
+        renderer.render(scene, camera);
+      };
+
+      animate();
+
+      // Optional: handle window resize
+      // Handle resize
+      const handleResize = () => {
+        const newWidth = container.clientWidth;
+        const newHeight = container.clientHeight;
+        camera.left = (-frustumSize * (newWidth / newHeight)) / 2;
+        camera.right = (frustumSize * (newWidth / newHeight)) / 2;
+        camera.top = frustumSize / 2;
+        camera.bottom = -frustumSize / 2;
+        camera.updateProjectionMatrix();
+        renderer.setSize(newWidth, newHeight);
+      };
+
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        renderer.dispose();
+        container.removeChild(renderer.domElement);
+      };
+    })
+
+  });
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        width: "100%",
+        height: "100%",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    />
+  );
+}

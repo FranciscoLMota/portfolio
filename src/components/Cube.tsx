@@ -8,7 +8,7 @@ interface cubeProps {
 
 export function Cube({darkMode} : cubeProps) {
   const containerRef = useRef(null);
-  const cubeMaterialRef = useRef(null);;
+  const cubeMaterialRef = useRef(null);
 
   useEffect(() => {
     const clock = new THREE.Clock();
