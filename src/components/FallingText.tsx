@@ -79,7 +79,7 @@ export function FallingText({ darkMode }: cubeProps) {
       groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
       world.addBody(groundBody);
 
-      const mouseRadius = 1.5;
+      const mouseRadius = .5;
       const mouseBody = new CANNON.Body({
         mass: 0,
         type: CANNON.Body.KINEMATIC,
@@ -89,7 +89,7 @@ export function FallingText({ darkMode }: cubeProps) {
 
       const viewWidth = frustumSize * aspect;
       const viewHeight = frustumSize * 1.5;
-      const text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+      const text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').sort(function(){return 0.5-Math.random()});
       const meshes: LineSegments[] = [];
       const bodies: CANNON.Body[] = [];
 
