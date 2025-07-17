@@ -38,11 +38,10 @@ function App() {
       <KeyboardNavigation shortcuts={shortcuts} />
       <div className="bg-eggshell dark:bg-midnight transition-all duration-500 font-jet">
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-        <div className="w-screen h-96">
-          <FallingText  darkMode={darkMode}/>
-        </div>
 
-        <Hero />
+        <FallingText darkMode={darkMode} />
+
+
         <About />
         <Projects />
         <Contact darkMode={darkMode} />

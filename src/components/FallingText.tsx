@@ -14,7 +14,7 @@ interface cubeProps {
 export function FallingText({ darkMode }: cubeProps) {
   const containerRef = useRef(null);
   const regMaterialRef = useRef(null);
-  
+
 
   useEffect(() => {
     const mouse = { x: 0, y: 0 };
@@ -31,7 +31,6 @@ export function FallingText({ darkMode }: cubeProps) {
     const loader = new FontLoader();
 
     loader.load('/src/fonts/NippoVariable_Bold.json', function (font: Font) {
-
 
 
       const container = containerRef.current;
@@ -60,7 +59,6 @@ export function FallingText({ darkMode }: cubeProps) {
       renderer.setSize(width, height);
 
       container.appendChild(renderer.domElement);
-
       const regMaterial = new LineBasicMaterial({
         color: darkMode ? 0xffffff : 0x0f0f0f,
       });
@@ -76,7 +74,7 @@ export function FallingText({ darkMode }: cubeProps) {
         type: CANNON.Body.STATIC,
         shape: new CANNON.Plane(),
       });
-      
+
       world.addBody(groundBody);
 
       // Align ground to be horizontal at y = -5
@@ -226,17 +224,33 @@ export function FallingText({ darkMode }: cubeProps) {
       };
     })
 
-  });
+  }, [darkMode]);
+
 
   return (
-    <div
-      ref={containerRef}
-      style={{
-        width: "100%",
-        height: "100%",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    />
+    <>
+      <section id="hero">
+        <div className="text-midnight dark:text-eggshell">
+          <div className="h-screen m-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 text-center">
+            <div
+              ref={containerRef}
+              style={{
+                width: "100%",
+                height: "100%",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 font-display text-5xl font-medium tracking-tight text-midnight dark:text-eggshell sm:text-7xl">
+                <span className="inline-block transition-colors duration-500 bg-midnight dark:bg-eggshell dark:text-midnight text-eggshell px-3">
+                  <span className="relative">Lorem Ipsum</span>
+                </span>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
+
 }
