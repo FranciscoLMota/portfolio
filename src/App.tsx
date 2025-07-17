@@ -2,13 +2,13 @@ import "./App.css";
 import { useEffect, useState } from "react";
 //Features
 import { KeyboardNavigation } from "./components/features/KeyboardNavigation";
-
 //Sections
 import { Hero } from "./components/Hero";
 import { Navbar } from "./components/Navbar";
 import { About } from "./components/About";
 import { Projects } from "./components/Projects";
 import { Contact } from "./components/Contact";
+import { FallingText } from "./components/FallingText";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -38,10 +38,14 @@ function App() {
       <KeyboardNavigation shortcuts={shortcuts} />
       <div className="bg-eggshell dark:bg-midnight transition-all duration-500 font-jet">
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-        <Hero />
+
+        <FallingText darkMode={darkMode} />
+
+
         <About />
         <Projects />
         <Contact darkMode={darkMode} />
+
       </div>
     </>
   );
