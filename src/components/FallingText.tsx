@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FontLoader } from './lib/three/loaders/FontLoader'
 import { TextGeometry } from './lib/three/geometries/TextGeometry'
-import { Scene, PerspectiveCamera, OrthographicCamera, WebGLRenderer, LineBasicMaterial, LineSegments, EdgesGeometry, BoxGeometry, Mesh, MeshPhongMaterial } from "three";
+import { Scene, OrthographicCamera, WebGLRenderer, LineBasicMaterial, LineSegments, EdgesGeometry, BoxGeometry, Mesh, MeshPhongMaterial } from "three";
 import { Font } from "three/examples/jsm/Addons.js";
 import * as CANNON from 'cannon-es';
 import * as THREE from 'three';
@@ -14,6 +14,7 @@ interface cubeProps {
 export function FallingText({ darkMode }: cubeProps) {
   const containerRef = useRef(null);
   const regMaterialRef = useRef(null);
+  
 
   useEffect(() => {
     const mouse = { x: 0, y: 0 };
@@ -29,7 +30,7 @@ export function FallingText({ darkMode }: cubeProps) {
 
     const loader = new FontLoader();
 
-    loader.load('/src/fonts/JetBrainsMono_Regular.json', function (font: Font) {
+    loader.load('/src/fonts/NippoVariable_Bold.json', function (font: Font) {
 
 
 
@@ -75,6 +76,7 @@ export function FallingText({ darkMode }: cubeProps) {
         type: CANNON.Body.STATIC,
         shape: new CANNON.Plane(),
       });
+      
       world.addBody(groundBody);
 
       // Align ground to be horizontal at y = -5
@@ -92,14 +94,15 @@ export function FallingText({ darkMode }: cubeProps) {
       const viewWidth = frustumSize * aspect;
       const viewHeight = frustumSize * 1.5;
 
-      const text = "ABCDEFGHIJKLMNOPQRSTUVXYZ".split('');
+      const text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
       const meshes: LineSegments[] = [];
       const bodies: CANNON.Body[] = [];
 
+      const maxLetters = Math.floor(Math.random() * (90 - 50 + 1)) + 50;
       let letterIndex = 0;
 
-      // Use the first character to get bounding box size
-      const tempGeo = new TextGeometry("F", {
+      // Precompute bounding box for layout (using a single character)
+      const tempGeo = new TextGeometry("H", {
         font,
         size: 3,
         height: 0.2,
@@ -109,54 +112,75 @@ export function FallingText({ darkMode }: cubeProps) {
       const letterWidth = tempSize.x;
       const letterHeight = tempSize.y;
 
+      // Determine how many columns fit in the view
       const cols = Math.floor(viewWidth / letterWidth);
-      const rows = Math.floor(viewHeight / letterHeight);
 
-      for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-          const char = text[letterIndex % text.length];
-          letterIndex++;
+      // Create left and right wall shapes
+      const wallThickness = 1;
+      const wallHeight = viewHeight;
+      const wallDepth = 1;
 
-          const textGeo = new TextGeometry(char, {
-            font: font,
-            size: 3,
-            height: 0.2,
-          });
-          textGeo.computeBoundingBox();
-          const bbox = textGeo.boundingBox;
-          if (!bbox) continue;
+      // LEFT WALL
+      const leftWall = new CANNON.Body({
+        type: CANNON.Body.STATIC,
+        shape: new CANNON.Box(new CANNON.Vec3(wallThickness / 2, wallHeight / 2, wallDepth / 2)),
+      });
 
-          const size = bbox.getSize(new THREE.Vector3());
-          const edges = new EdgesGeometry(textGeo);
-          const mesh = new LineSegments(edges, regMaterial);
+      leftWall.position.set(-viewWidth / 2 - 2 - wallThickness / 2, 0, 0);
 
-          const x = -viewWidth / 2 + col * size.x + size.x / 2;
-          const y = viewHeight / 2 + row * size.y + size.y / 2 + Math.random() * 2;
+      world.addBody(leftWall);
 
-          mesh.position.set(x, y, 0);
-          scene.add(mesh);
-          meshes.push(mesh);
+      // RIGHT WALL
+      const rightWall = new CANNON.Body({
+        type: CANNON.Body.STATIC,
+        shape: new CANNON.Box(new CANNON.Vec3(wallThickness / 2, wallHeight / 2, wallDepth / 2)),
+      });
 
-          const shape = new CANNON.Box(
-            new CANNON.Vec3(size.x / 2, size.y / 2, size.z / 2)
-          );
+      rightWall.position.set(viewWidth / 2 + wallThickness / 2, 0, 0);
 
-          const body = new CANNON.Body({
-            mass: 1,
-            shape,
-            position: new CANNON.Vec3(x, y, 0),
-          });
+      world.addBody(rightWall);
 
-          // Lock rotation and Z movement
-          body.angularFactor.set(0, 0, 0);
-          body.linearFactor.set(1, 1, 0);  // Lock Z axis movement
-          body.angularDamping = 1;
+      for (let i = 0; i < maxLetters; i++) {
+        const char = text[letterIndex % text.length];
+        letterIndex++;
 
-          world.addBody(body);
-          bodies.push(body);
-        }
+        // Reuse geometry creation but skip computing bounding box every time
+        const textGeo = new TextGeometry(char, {
+          font,
+          size: 3,
+          height: 0.2,
+        });
+        const edges = new EdgesGeometry(textGeo);
+        const mesh = new LineSegments(edges, regMaterial);
+
+        // Spread letters in a grid pattern
+        const col = i % cols;
+        const row = Math.floor(i / cols);
+
+        const x = -viewWidth / 2 + col * letterWidth + letterWidth / 2;
+        const y = viewHeight / 2 - row * letterHeight - letterHeight / 2 + Math.random() * 2;
+
+        mesh.position.set(x, y, 0);
+        scene.add(mesh);
+        meshes.push(mesh);
+
+        const shape = new CANNON.Box(
+          new CANNON.Vec3(letterWidth / 2, letterHeight / 2, 0.1)
+        );
+
+        const body = new CANNON.Body({
+          mass: 1,
+          shape,
+          position: new CANNON.Vec3(x, y, 0),
+        });
+
+        body.angularFactor.set(0, 0, 0);
+        body.linearFactor.set(1, 1, 0);
+        body.angularDamping = 1;
+
+        world.addBody(body);
+        bodies.push(body);
       }
-
 
       const animate = () => {
         requestAnimationFrame(animate);
