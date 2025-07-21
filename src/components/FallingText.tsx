@@ -43,73 +43,53 @@ export function FallingText({ darkMode }: cubeProps) {
 
     const loader = new FontLoader();
     loader.load('/src/fonts/NippoVariable_Bold.json', (font: Font) => {
+
+      //Setting the scene and container
       const container = containerRef.current!;
       const width = container.clientWidth;
       const height = container.clientHeight;
       const scene = new Scene();
       const aspect = width / height;
       const frustumSize = 15;
-
-      const camera = new OrthographicCamera(
-        (-frustumSize * aspect) / 2,
-        (frustumSize * aspect) / 2,
-        frustumSize / 2,
-        -frustumSize / 2,
-        1,
-        1000
-      );
-
-      camera.position.set(0, 0, 10);
-      camera.lookAt(0, 0, 0);
-
+      const viewWidth = frustumSize * aspect;
+      const viewHeight = frustumSize * 1.5;
       const renderer = new WebGLRenderer({ antialias: false, alpha: true });
       renderer.setClearColor(0x000000, 0);
       renderer.setSize(width, height);
       container.appendChild(renderer.domElement);
 
+
+      //Setting up the "2D" camera
+      const camera = new OrthographicCamera(
+        (-viewWidth) / 2,
+        (viewWidth) / 2,
+        frustumSize / 2,
+        -frustumSize / 2,
+        1,
+        1000
+      );
+      camera.position.set(0, 0, 10);
+      camera.lookAt(0, 0, 0);
+
+
+      //Setting up the world to add Gravity
       const world = new CANNON.World({
         gravity: new CANNON.Vec3(0, -9.82, 0),
       });
 
+      //Setting up the ground so the letters stop when falling
       const groundBody = new CANNON.Body({
         type: CANNON.Body.STATIC,
         shape: new CANNON.Plane(),
       });
+
       groundBody.position.set(0, -9, 0);
       groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0);
+
       world.addBody(groundBody);
 
-      const mouseRadius = .5;
-      const mouseBody = new CANNON.Body({
-        mass: 0,
-        type: CANNON.Body.KINEMATIC,
-        shape: new CANNON.Sphere(mouseRadius),
-      });
-      world.addBody(mouseBody);
 
-      const viewWidth = frustumSize * aspect;
-      const viewHeight = frustumSize * 1.5;
-      const text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').sort(function(){return 0.5-Math.random()});
-      const meshes: LineSegments[] = [];
-      const bodies: CANNON.Body[] = [];
-
-      const maxLetters = 50;
-      let letterIndex = 0;
-      
-      
-
-      const tempGeo = new TextGeometry("H", {
-        font,
-        size: 3,
-        height: 0.2,
-      });
-      tempGeo.computeBoundingBox();
-      const tempSize = tempGeo.boundingBox!.getSize(new THREE.Vector3());
-      const letterWidth = tempSize.x;
-      const letterHeight = tempSize.y;
-      const cols = Math.floor(viewWidth / letterWidth);
-
-      // Walls
+      // Setting up the walls so the letters don't slide away from view
       const wallThickness = 1;
       const wallHeight = viewHeight;
       const wallDepth = 1;
@@ -128,7 +108,40 @@ export function FallingText({ darkMode }: cubeProps) {
       rightWall.position.set(viewWidth / 2 + wallThickness / 2, 0, 0);
       world.addBody(rightWall);
 
+
+      //Mouse interaction to push the letters around
+      const mouseRadius = .5;
+      const mouseBody = new CANNON.Body({
+        mass: 0,
+        type: CANNON.Body.KINEMATIC,
+        shape: new CANNON.Sphere(mouseRadius),
+      });
+      world.addBody(mouseBody);
+
+      //Setting up the letters, gets the whole alphabet and mix them around
+      const text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').sort(function () { return 0.5 - Math.random() });
+      const meshes: LineSegments[] = [];
+      const bodies: CANNON.Body[] = [];
+
+      //Setting up the max number of letters
+      //TODO: Add a condition for mobile to use less letters and avoid overflow of letters
+      const maxLetters = 50;
+      let letterIndex = 0;
+
+      //Generating letters and calculating their collision
+      const tempGeo = new TextGeometry("O", {
+        font,
+        size: 3,
+        height: 0.2,
+      });
+      tempGeo.computeBoundingBox();
+      const tempSize = tempGeo.boundingBox!.getSize(new THREE.Vector3());
+      const letterWidth = tempSize.x;
+      const letterHeight = tempSize.y;
+      const cols = Math.floor(viewWidth / letterWidth);
+
       for (let i = 0; i < maxLetters; i++) {
+        text.sort(function () { return 0.5 - Math.random() })
         const char = text[letterIndex++ % text.length];
         const textGeo = new TextGeometry(char, {
           font,
