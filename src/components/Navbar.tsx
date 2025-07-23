@@ -29,7 +29,7 @@ export function Navbar({ darkMode, setDarkMode} : navProps) {
             <nav className="flex justify-between text-midnight dark:text-eggshell w-screen">
               <div className="px-5 xl:px-12 py-6 flex w-full items-center">
                 <a
-                  className="text-xl font-bold font-heading transition-colors duration-500 "
+                  className="text-xl font-bold font-heading transition-colors duration-500 hover:bg-bee hover:text-midnight px-3"
                   href="#"
                 >
                   Francisco L. Mota

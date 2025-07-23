@@ -17,7 +17,7 @@ export function Contact({ darkMode }: contactProps) {
             <Cube darkMode={darkMode} />
           </div>
           <div className="w-full md:w-2/3 h-[50dvh] mx-auto px-4 sm:px-6 md:px-8 pt-5 order-1 md:order-2 ">
-            <h1 className="flex-initial max-w-4xl text-5xl font-medium tracking-tight  my-3">
+            <h1 className="flex-initial max-w-4xl text-5xl font-medium tracking-tight my-3 hover:bg-bee hover:text-midnight">
               CONTACT
             </h1>
             <span className="text-md">
@@ -50,14 +50,14 @@ export function Contact({ darkMode }: contactProps) {
         </div>
         <div className="w-full text-center">
           <span className="mx-auto text-sm tracking-tight inline-block  ">
-            - Made with <span className="px-2 bg-bee dark:px-0 dark:bg-midnight dark:text-bee">mixed feelings</span>  and
+            - Made with <span className="px-2 bg-bee dark:bg-midnight dark:text-bee">mixed feelings</span>  and&nbsp;
             <a
               href="https://react.dev"
               target="_blank"
               rel="noopener noreferrer"
-              className="pl-2 text-react"
+              className="px-2 bg-react dark:bg-midnight dark:text-react "
             >
-              React 
+              React
             </a> -
             <br></br>
             Francisco Mota &copy;  {new Date().getFullYear()}

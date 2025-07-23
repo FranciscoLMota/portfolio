@@ -1,12 +1,18 @@
+import { useEffect, useState } from "react";
+
 interface LinkProps {
   href: string;
   linkText: string;
 }
-import { useEffect, useState } from "react";
+
 export function NavLink({ href, linkText }: LinkProps) {
-  const [darkMode, setDarkMode] = useState(
+  const [darkMode] = useState(
     localStorage.getItem("theme") === "dark"
   );
+
+  const [activeSection, setActiveSection] = useState("hero");
+
+  // Toggle dark mode
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
@@ -17,51 +23,53 @@ export function NavLink({ href, linkText }: LinkProps) {
     }
   }, [darkMode]);
 
-  const handleScroll = (event, sectionId: string) => {
-    event.preventDefault(); // Prevent the default jump
-
+  // Smooth scroll handler
+  const handleScroll = (event: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    event.preventDefault();
     const section = document.getElementById(sectionId);
-
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
     }
   };
-  const [activeSection, setActiveSection] = useState("hero");
 
+  // IntersectionObserver for active section
   useEffect(() => {
-    const sections = ["hero", "about", "projects", "contact"];
-
-    const handleScroll = () => {
-      let currentSection = "hero";
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            currentSection = section;
-            break;
-          }
-        }
-      }
-      setActiveSection(currentSection);
+    const sectionElements = document.querySelectorAll("section[id]");
+    const observerOptions = {
+      root: null,
+      rootMargin: "0px",
+      threshold: 0.5, // Trigger when 50% of the section is visible
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("id");
+          if (id) {
+            setActiveSection(id);
+          }
+        }
+      });
+    }, observerOptions);
+
+    sectionElements.forEach((section) => observer.observe(section));
+
+    return () => {
+      sectionElements.forEach((section) => observer.unobserve(section));
+    };
   }, []);
 
   return (
-    <>
-      <a
-        className={`hover:bg-bee hover:text-midnight px-2 transition-all duration-500 ${
-          activeSection === href
-            ? "bg-midnight text-eggshell dark:bg-eggshell dark:text-midnight "
-            : ""
-        }`}
-        onClick={(e) => handleScroll(e, href)}
-      >
-        {linkText}
-      </a>
-    </>
+    <a
+      href={`#${href}`}
+      onClick={(e) => handleScroll(e, href)}
+      className={`hover:bg-bee hover:text-midnight px-2 transition-all duration-500 ${
+        activeSection === href
+          ? "bg-midnight text-eggshell dark:bg-eggshell dark:text-midnight"
+          : ""
+      }`}
+    >
+      {linkText}
+    </a>
   );
 }
