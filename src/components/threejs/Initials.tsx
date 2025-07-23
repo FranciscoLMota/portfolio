@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
-import { FontLoader } from './lib/three/loaders/FontLoader';
-import { TextGeometry } from './lib/three/geometries/TextGeometry';
+import { TextGeometry } from "../lib/three/geometries/TextGeometry";
 import { Font } from "three/examples/jsm/Addons.js";
 
 interface initialsProps {

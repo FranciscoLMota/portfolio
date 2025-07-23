@@ -1,4 +1,4 @@
-import { Cube } from "./Cube";
+import { Cube } from "../threejs/Cube";
 import { MdOutlineArrowOutward } from "react-icons/md";
 
 interface contactProps {
