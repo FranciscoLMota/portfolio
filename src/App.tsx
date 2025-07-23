@@ -42,7 +42,7 @@ function App() {
         <FallingText darkMode={darkMode} />
 
 
-        <About />
+        <About darkMode={darkMode}/>
         <Projects />
         <Contact darkMode={darkMode} />
 

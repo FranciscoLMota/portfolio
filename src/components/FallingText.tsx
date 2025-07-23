@@ -125,7 +125,7 @@ export function FallingText({ darkMode }: cubeProps) {
 
       //Setting up the max number of letters
       //TODO: Add a condition for mobile to use less letters and avoid overflow of letters
-      const maxLetters = 50;
+      const maxLetters = 25;
       let letterIndex = 0;
 
       //Generating letters and calculating their collision
@@ -225,12 +225,12 @@ export function FallingText({ darkMode }: cubeProps) {
             }}
           >
             <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 font-display text-5xl font-medium tracking-tight text-midnight dark:text-eggshell sm:text-7xl">
-              <span className="inline-block transition-colors duration-500 bg-midnight dark:bg-eggshell dark:text-midnight text-eggshell px-3">
+              <span className="inline-block transition-colors duration-500 bg-midnight dark:bg-eggshell dark:text-midnight text-eggshell px-3 hover:bg-bee hover:text-midnight">
                 <span className="relative">Francisco Mota</span>
               </span>
             </h1>
             <h3 className="absolute top-2/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 font-display text-5xl font-medium tracking-tight text-midnight dark:text-eggshell sm:text-5xl">
-              <span className="inline-block transition-colors duration-500 bg-midnight dark:bg-eggshell dark:text-midnight text-eggshell px-3">
+              <span className="inline-block transition-colors duration-500 bg-midnight dark:bg-eggshell dark:text-midnight text-eggshell px-3 hover:bg-bee hover:text-midnight">
                 <span className="relative">Developer</span>
               </span>
             </h3>

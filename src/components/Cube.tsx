@@ -6,9 +6,10 @@ interface cubeProps {
 }
 
 
-export function Cube({darkMode} : cubeProps) {
+export function Cube({ darkMode }: cubeProps) {
   const containerRef = useRef(null);
   const cubeMaterialRef = useRef(null);
+  const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
     const clock = new THREE.Clock();
@@ -45,8 +46,9 @@ export function Cube({darkMode} : cubeProps) {
     scene.add(cubeShape);
 
     const animate = () => {
-      diamondShape.rotation.y += 0.03;
-      cubeShape.rotation.y -= 0.01;
+      const speedMultiplier = hovered ? 3 : 1; // ← change this multiplier to control spin speed
+      diamondShape.rotation.y += 0.03 * speedMultiplier;
+      cubeShape.rotation.y -= 0.01 * speedMultiplier;
 
       diamondShape.position.y = Math.sin(clock.getElapsedTime() * 2) * 0.2;
 
@@ -55,7 +57,6 @@ export function Cube({darkMode} : cubeProps) {
 
     renderer.setAnimationLoop(animate);
 
-    // Optional: handle window resize
     const handleResize = () => {
       const newWidth = container.clientWidth;
       const newHeight = container.clientHeight;
@@ -71,11 +72,13 @@ export function Cube({darkMode} : cubeProps) {
       renderer.dispose();
       container.removeChild(renderer.domElement);
     };
-  });
+  }, [darkMode, hovered]);
 
   return (
     <div
       ref={containerRef}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
         width: "100%",
         height: "100%",
