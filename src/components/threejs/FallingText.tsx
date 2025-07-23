@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { TextGeometry } from "./lib/three/geometries/TextGeometry";
+import { TextGeometry } from "../lib/three/geometries/TextGeometry";
 import {
   Scene,
   OrthographicCamera,

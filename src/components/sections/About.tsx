@@ -1,4 +1,4 @@
-import { Initials } from "./Initials";
+import { Initials } from "../threejs/Initials";
 
 
 interface aboutProps {

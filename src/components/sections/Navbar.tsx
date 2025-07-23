@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "./features/NavLink";
+import { NavLink } from "../features/NavLink";
 import { HiMiniMoon, HiMiniSun  } from "react-icons/hi2";
 
 interface navProps {
