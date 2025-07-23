@@ -31,7 +31,7 @@ export function Initials({ darkMode, font }: initialsProps) {
       color: darkMode ? 0xf6f3f0 : 0x0f0f0f,
     });
     const fMaterial = new THREE.LineBasicMaterial({
-      color: darkMode ? 0xfdc700 : 0x0f0f0f,
+      color: darkMode ? 0xfdc700 : 0x0036fe,
     });
     initialsMaterialRef.current = initialsMaterial;
     fMaterialRef.current = fMaterial;
@@ -143,7 +143,7 @@ export function Initials({ darkMode, font }: initialsProps) {
       initialsMaterialRef.current.needsUpdate = true;
     }
     if (fMaterialRef.current) {
-      fMaterialRef.current.color.set(darkMode ? 0xfdc700 : 0x0f0f0f);
+      fMaterialRef.current.color.set(darkMode ? 0xfdc700 : 0x0036fe);
       fMaterialRef.current.needsUpdate = true;
     }
   }, [darkMode]);

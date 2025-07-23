@@ -10,12 +10,14 @@ import { About } from "./components/sections/About";
 import { Projects } from "./components/sections/Projects";
 import { Contact } from "./components/sections/Contact";
 import { FallingText } from "./components/threejs/FallingText";
+import { Experience } from "./components/sections/Experience";
 
 function App() {
   // const [count, setCount] = useState(0)
   const shortcuts = [
     { key: "h", section: "hero" },
     { key: "a", section: "about" },
+    { key: "x", section: "experience" },
     { key: "p", section: "projects" },
     { key: "c", section: "contact" },
   ];
@@ -60,6 +62,7 @@ function App() {
 
 
         <About darkMode={darkMode} font={font}/>
+        <Experience darkMode={darkMode} />
         <Projects />
         <Contact darkMode={darkMode} />
 

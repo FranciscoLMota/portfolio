@@ -1,4 +1,5 @@
-import { Cube } from "./threejs/Cube";
+
+import { Sphere } from "../threejs/Sphere";
 import { MdOutlineArrowOutward } from "react-icons/md";
 
 interface contactProps {
@@ -14,14 +15,14 @@ export function Experience({ darkMode }: contactProps) {
       >
         <div className="flex flex-col md:flex-row ">
           <div className="h-[50dvh] md:w-1/3 order-2 md:order-1">
-            <Cube darkMode={darkMode} />
+            <Sphere darkMode={darkMode} />
           </div>
           <div className="w-full md:w-2/3 h-[50dvh] mx-auto px-4 sm:px-6 md:px-8 pt-5 order-1 md:order-2 ">
-            <h1 className="flex-initial max-w-4xl text-5xl font-medium tracking-tight my-3 hover:bg-bee hover:text-midnight">
+            <h1 className="flex-initial max-w-4xl text-5xl font-medium tracking-tight my-3 hover:bg-water hover:text-eggshell dark:hover:bg-bee dark:hover:text-midnight">
               EXPERIENCE
             </h1>
             <span className="text-md">
-              I've been lucky enough to work in some really cool companies and study at some pretty nice places! Take a look:
+              I've been lucky enough to work in some really cool companies and study at some pretty nice places! Maybe yours will be the next one!
             </span>
             <div className="flex flex-col mt-4 mx-auto text-md tracking-tight">
               {[

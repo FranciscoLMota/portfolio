@@ -17,7 +17,7 @@ export function Contact({ darkMode }: contactProps) {
             <Cube darkMode={darkMode} />
           </div>
           <div className="w-full md:w-2/3 h-[50dvh] mx-auto px-4 sm:px-6 md:px-8 pt-5 order-1 md:order-2 ">
-            <h1 className="flex-initial max-w-4xl text-5xl font-medium tracking-tight my-3 hover:bg-bee hover:text-midnight">
+            <h1 className="flex-initial max-w-4xl text-5xl font-medium tracking-tight my-3 hover:bg-water hover:text-eggshell dark:hover:bg-bee dark:hover:text-midnight">
               CONTACT
             </h1>
             <span className="text-md">
