@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { KeyboardNavigation } from "./components/features/KeyboardNavigation";
 //Sections
 import { Hero } from "./components/Hero";
+import { FontLoader } from "./components/lib/three/loaders/FontLoader";
+import { Font } from "three/examples/jsm/Addons.js";
 import { Navbar } from "./components/Navbar";
 import { About } from "./components/About";
 import { Projects } from "./components/Projects";
@@ -33,16 +35,32 @@ function App() {
     }
   }, [darkMode]);
 
+   const [font, setFont] = useState<Font | null>(null);
+
+  useEffect(() => {
+    const loader = new FontLoader();
+    loader.load(
+      "/src/fonts/NippoVariable_Bold.json",
+      (loadedFont) => {
+        setFont(loadedFont);
+      },
+      undefined,
+      (error) => {
+        console.error("Error loading font:", error);
+      }
+    );
+  }, []);
+
   return (
     <>
       <KeyboardNavigation shortcuts={shortcuts} />
       <div className="bg-eggshell dark:bg-midnight transition-all duration-500 font-jet">
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
 
-        <FallingText darkMode={darkMode} />
+        <FallingText darkMode={darkMode} font={font} />
 
 
-        <About darkMode={darkMode}/>
+        <About darkMode={darkMode} font={font}/>
         <Projects />
         <Contact darkMode={darkMode} />
 

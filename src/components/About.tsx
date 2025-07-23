@@ -3,8 +3,9 @@ import { Initials } from "./Initials";
 
 interface aboutProps {
   darkMode: boolean;
+  font: Font;
 }
-export function About({ darkMode }: aboutProps) {
+export function About({ darkMode, font }: aboutProps) {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -29,7 +30,7 @@ export function About({ darkMode }: aboutProps) {
 
           </div>
           <div className="h-[50dvh] md:w-1/3 order-2">
-            <Initials darkMode={darkMode} />
+            <Initials darkMode={darkMode} font={font} />
           </div>
         </div>
       </section>

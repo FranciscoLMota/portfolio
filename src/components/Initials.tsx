@@ -6,123 +6,149 @@ import { Font } from "three/examples/jsm/Addons.js";
 
 interface initialsProps {
   darkMode: boolean;
+  font: Font;
 }
 
+export function Initials({ darkMode, font }: initialsProps) {
 
-export function Initials({ darkMode }: initialsProps) {
   const containerRef = useRef(null);
-  const initialsMaterialRef = useRef(null);
-  const [hovered, setHovered] = useState(false);
+  const initialsMaterialRef = useRef<THREE.LineBasicMaterial | null>(null);
+  const fMaterialRef = useRef<THREE.LineBasicMaterial | null>(null);
   const fShapeRef = useRef<THREE.LineSegments>(null);
   const mShapeRef = useRef<THREE.LineSegments>(null);
 
-  // useEffect(() => {
-  //   if (fShape) {
-  //     console.log(fShape)
-  //   }
-  // }, [darkMode]);
-
-
 
   useEffect(() => {
+    if (!font) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    let renderer: THREE.WebGLRenderer;
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 5;
+
     const initialsMaterial = new THREE.LineBasicMaterial({
       color: darkMode ? 0xf6f3f0 : 0x0f0f0f,
     });
+    const fMaterial = new THREE.LineBasicMaterial({
+      color: darkMode ? 0xfdc700 : 0x0f0f0f,
+    });
+    initialsMaterialRef.current = initialsMaterial;
+    fMaterialRef.current = fMaterial;
 
-    const loader = new FontLoader();
-    loader.load('/src/fonts/NippoVariable_Bold.json', (font: Font) => {
-      const clock = new THREE.Clock();
-      const container = containerRef.current;
-      const width = container.clientWidth;
-      const height = container.clientHeight;
+    renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
 
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-      camera.position.z = 5;
+    let animationId: number;
 
-      const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
-      renderer.setClearColor(0x000000, 0); // 0 alpha = fully transparent
-      renderer.setSize(width, height);
+    let cleanupRequested = false; // ✅ ADDED: Prevent async leakss
 
-      container.appendChild(renderer.domElement);
+    if (cleanupRequested) return;
 
-      const fShape = new THREE.LineSegments(
-        new THREE.EdgesGeometry(new TextGeometry("F", {
-          font,
-          size: 3,
-          depth: 1,
-          height: 0.2,
-        })),
-        initialsMaterial
-      );
+    const clock = new THREE.Clock();
 
+    const fShape = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new TextGeometry("F", {
+        font,
+        size: 3,
+        depth: 1,
+        height: 0.2,
+      })),
+      fMaterial
+    );
 
-      const mShape = new THREE.LineSegments(
-        new THREE.EdgesGeometry(new TextGeometry("M", {
-          font,
-          size: 3,
-          depth: 1,
-          height: 0.2,
-        })),
-        initialsMaterial
-      );
+    const mShape = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new TextGeometry("M", {
+        font,
+        size: 3,
+        depth: 1,
+        height: 0.2,
+      })),
+      initialsMaterial
+    );
 
-      scene.add(fShape);
-      scene.add(mShape);
-      fShapeRef.current = fShape;
-      mShapeRef.current = mShape;
+    // Center geometry pivot
+    fShape.geometry.computeBoundingBox();
+    mShape.geometry.computeBoundingBox();
+    const fCenter = new THREE.Vector3();
+    const mCenter = new THREE.Vector3();
+    fShape.geometry.boundingBox!.getCenter(fCenter);
+    mShape.geometry.boundingBox!.getCenter(mCenter);
+    fShape.geometry.translate(-fCenter.x, -fCenter.y, -fCenter.z);
+    mShape.geometry.translate(-mCenter.x, -mCenter.y, -mCenter.z);
 
+    fShape.position.set(-1.25, 0.5, 0);
+    mShape.position.set(1.25, -0.5, 0);
 
-      // Center geometry itself, so pivot is in the middle
-      fShape.geometry.computeBoundingBox();
-      mShape.geometry.computeBoundingBox();
+    fShapeRef.current = fShape;
+    mShapeRef.current = mShape;
 
-      const fCenter = new THREE.Vector3();
-      const mCenter = new THREE.Vector3();
-      fShape.geometry.boundingBox!.getCenter(fCenter);
-      mShape.geometry.boundingBox!.getCenter(mCenter);
+    scene.add(fShape);
+    scene.add(mShape);
 
-      // Shift geometry so that pivot is at its center
-      fShape.geometry.translate(-fCenter.x, -fCenter.y, -fCenter.z);
-      mShape.geometry.translate(-mCenter.x, -mCenter.y, -mCenter.z);
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      const t = clock.getElapsedTime();
+      fShape.position.y = 0.7 + Math.sin(t * 2) * 0.2;
+      mShape.position.y = -0.7 - Math.sin(t * 2) * 0.2;
+      fShape.rotation.y = -Math.sin(t * 2) * 0.2;
+      mShape.rotation.y = Math.sin(t * 2) * 0.2;
 
-      // Now position the meshes wherever you want in the scene
-      fShape.position.set(-1.25, 0.5, 0); // no need to compensate for bounding box
-      mShape.position.set(1.25, -0.5, 0);
+      renderer.render(scene, camera);
+    };
+    animate();
 
-      const animate = () => {
-        // Update y positions for animation, keeping x centered
-        fShape.position.y = 0.7 + Math.sin(clock.getElapsedTime() * 2) * 0.2;
-        mShape.position.y = -0.7 + (Math.sin(clock.getElapsedTime() * 2) * 0.2) * -1;
-        fShape.rotation.y = -(Math.sin(clock.getElapsedTime() * 2) * 0.2);
-        mShape.rotation.y = -(Math.sin(clock.getElapsedTime() * 2) * 0.2) * -1;
+    const handleResize = () => {
+      const newWidth = container.clientWidth;
+      const newHeight = container.clientHeight;
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(newWidth, newHeight);
+    };
 
-        renderer.render(scene, camera);
-      };
+    window.addEventListener("resize", handleResize);
 
-      renderer.setAnimationLoop(animate);
+    const cleanup = () => {
+      cleanupRequested = true;
+      cancelAnimationFrame(animationId);
+      window.removeEventListener("resize", handleResize);
 
+      if (fShape) {
+        fShape.geometry.dispose();
+        fShape.material.dispose();
+      }
 
-      const handleResize = () => {
-        const newWidth = container.clientWidth;
-        const newHeight = container.clientHeight;
-        camera.aspect = newWidth / newHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(newWidth, newHeight);
-      };
+      if (mShape) {
+        mShape.geometry.dispose();
+        mShape.material.dispose();
+      }
 
-      window.addEventListener("resize", handleResize);
+      initialsMaterial.dispose();
 
-      return () => {
-        window.removeEventListener("resize", handleResize);
+      if (renderer && container.contains(renderer.domElement)) {
         renderer.dispose();
         container.removeChild(renderer.domElement);
-      };
+      }
+    };
 
-    });
+    return cleanup;
+  }, [font]);
 
 
+  useEffect(() => {
+    if (initialsMaterialRef.current) {
+      initialsMaterialRef.current.color.set(darkMode ? 0xffffff : 0x0f0f0f);
+      initialsMaterialRef.current.needsUpdate = true;
+    }
+    if (fMaterialRef.current) {
+      fMaterialRef.current.color.set(darkMode ? 0xfdc700 : 0x0f0f0f);
+      fMaterialRef.current.needsUpdate = true;
+    }
   }, [darkMode]);
+
 
   return (
     <div
@@ -130,7 +156,7 @@ export function Initials({ darkMode }: initialsProps) {
       style={{
         width: "100%",
         height: "100%",
-        position: "relative", // optional, useful for absolute children
+        position: "relative",
         overflow: "hidden",
       }}
     />
