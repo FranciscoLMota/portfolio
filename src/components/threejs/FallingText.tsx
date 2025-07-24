@@ -274,12 +274,12 @@ export function FallingText({ darkMode, font }: cubeProps) {
             }}
           >
             <h1 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 font-display text-5xl font-medium tracking-tight text-midnight dark:text-eggshell sm:text-7xl">
-              <span className="inline-block transition-colors duration-500 bg-midnight dark:bg-eggshell dark:text-midnight text-eggshell px-3 hover:bg-bee hover:text-midnight">
+              <span className="inline-block transition-colors duration-500 bg-midnight dark:bg-eggshell dark:text-midnight text-eggshell px-3 hover:bg-water hover:text-eggshell dark:hover:bg-bee dark:hover:text-midnight">
                 <span className="relative">Francisco Mota</span>
               </span>
             </h1>
             <h3 className="absolute top-2/3 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 font-display text-5xl font-medium tracking-tight text-midnight dark:text-eggshell sm:text-5xl">
-              <span className="inline-block transition-colors duration-500 bg-midnight dark:bg-eggshell dark:text-midnight text-eggshell px-3 hover:bg-bee hover:text-midnight">
+              <span className="inline-block transition-colors duration-500 bg-midnight dark:bg-eggshell dark:text-midnight text-eggshell px-3 hover:bg-water hover:text-eggshell dark:hover:bg-bee dark:hover:text-midnight">
                 <span className="relative">Developer</span>
               </span>
             </h3>

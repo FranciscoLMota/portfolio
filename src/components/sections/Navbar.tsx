@@ -1,25 +1,23 @@
 import { useState } from "react";
 import { NavLink } from "../features/NavLink";
-import { HiMiniMoon, HiMiniSun  } from "react-icons/hi2";
+import { HiMiniMoon, HiMiniSun } from "react-icons/hi2";
 
 interface navProps {
   darkMode: boolean;
   setDarkMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function Navbar({ darkMode, setDarkMode} : navProps) {
+export function Navbar({ darkMode, setDarkMode }: navProps) {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navlinks = [
     { href: "hero", text: "[H]ome" },
     { href: "about", text: "[A]bout" },
+    { href: "experience", text: "[E]xperience" },
     { href: "projects", text: "[P]rojects" },
     { href: "contact", text: "[C]ontact" }
   ];
-
-
-  
 
   return (
     <>
@@ -29,7 +27,7 @@ export function Navbar({ darkMode, setDarkMode} : navProps) {
             <nav className="flex justify-between text-midnight dark:text-eggshell w-screen">
               <div className="px-5 xl:px-12 py-6 flex w-full items-center">
                 <a
-                  className="text-xl font-bold font-heading transition-colors duration-500 hover:bg-bee hover:text-midnight px-3"
+                  className="text-xl font-bold font-heading transition-colors duration-500 hover:bg-water hover:text-eggshell dark:hover:bg-bee dark:hover:text-midnight px-3"
                   href="#"
                 >
                   Francisco L. Mota
@@ -37,17 +35,16 @@ export function Navbar({ darkMode, setDarkMode} : navProps) {
                 <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12"></ul>
 
                 <ul className="hidden xl:flex space-x-3 items-center text-sm">
-                {navlinks.map(({ href, text }) => (
-                  <li key={href}>
-                    <NavLink 
-                      href={href} 
-                      linkText={text} 
-
-                    />
-                  </li>
-                ))}
+                  {navlinks.map(({ href, text }) => (
+                    <li key={href}>
+                      <NavLink
+                        href={href}
+                        linkText={text}
+                      />
+                    </li>
+                  ))}
                   <li className="">
-                    {darkMode ?  <HiMiniMoon  onClick={() => setDarkMode(!darkMode)} size={20} /> : <HiMiniSun  onClick={() => setDarkMode(!darkMode)} size={20}/> }
+                    {darkMode ? <HiMiniMoon onClick={() => setDarkMode(!darkMode)} size={20} /> : <HiMiniSun onClick={() => setDarkMode(!darkMode)} size={20} />}
                   </li>
                 </ul>
               </div>
@@ -77,18 +74,18 @@ export function Navbar({ darkMode, setDarkMode} : navProps) {
         </div>
       </nav>
 
-      <div className={`xl:hidden fixed top-19 left-0 w-full h-screen z-50 bg-eggshell dark:bg-midnight transform ${isMenuOpen ? "translate-x-50" : "translate-x-full"} transition-transform duration-300 ease-in-out p-5 z-40 text-midnight dark:text-eggshell ` }>
+      <div className={`xl:hidden fixed top-19 left-0 w-full h-screen z-50 bg-eggshell dark:bg-midnight transform ${isMenuOpen ? "translate-x-50" : "translate-x-full"} transition-transform duration-300 ease-in-out p-5 z-40 text-midnight dark:text-eggshell `}>
         <ul className="space-y-5 text-sm mt-5 ">
-        {navlinks.map(({ href, text }) => (
-                  <li key={href}>
-                    <NavLink 
-                      href={href} 
-                      linkText={text} 
+          {navlinks.map(({ href, text }) => (
+            <li key={href}>
+              <NavLink
+                href={href}
+                linkText={text}
 
-                    />
-                  </li>
-                ))}
-          <li>    {darkMode ?  <HiMiniMoon  onClick={() => setDarkMode(!darkMode)} size={20} /> : <HiMiniSun  onClick={() => setDarkMode(!darkMode)} size={20}/> }</li>
+              />
+            </li>
+          ))}
+          <li>    {darkMode ? <HiMiniMoon onClick={() => setDarkMode(!darkMode)} size={20} /> : <HiMiniSun onClick={() => setDarkMode(!darkMode)} size={20} />}</li>
         </ul>
       </div>
     </>

@@ -1,17 +1,17 @@
 import * as THREE from "three";
 import { useEffect, useRef, useState } from "react";
 
-interface CubeProps {
+interface SphereProps {
   darkMode: boolean;
 }
 
-export function Cube({ darkMode }: CubeProps) {
+export function Sphere({ darkMode }: SphereProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer>();
-  const cubeMaterialRef = useRef<THREE.LineBasicMaterial>();
-  const diamondMaterialRef = useRef<THREE.LineBasicMaterial>();
-  const cubeRef = useRef<THREE.LineSegments>();
-  const diamondRef = useRef<THREE.LineSegments>();
+  const sphereMaterialRef = useRef<THREE.LineBasicMaterial>();
+  const sphereRef = useRef<THREE.LineSegments>();
+  const d20MaterialRef = useRef<THREE.LineBasicMaterial>();
+  const d20Ref = useRef<THREE.LineSegments>();
   const sceneRef = useRef<THREE.Scene>();
   const cameraRef = useRef<THREE.PerspectiveCamera>();
   const clockRef = useRef(new THREE.Clock());
@@ -40,36 +40,35 @@ export function Cube({ darkMode }: CubeProps) {
     rendererRef.current = renderer;
 
     // Materials
-    const cubeMaterial = new THREE.LineBasicMaterial({ color: darkMode ? 0xf6f3f0 : 0x0f0f0f });
-    const diamondMaterial = new THREE.LineBasicMaterial({ color: darkMode ? 0xfec800 : 0x0f0f0f });
-    cubeMaterialRef.current = cubeMaterial;
-    diamondMaterialRef.current = diamondMaterial;
+    const sphereMaterial = new THREE.LineBasicMaterial({ color: darkMode ? 0xf6f3f0 : 0x0f0f0f });
+    sphereMaterialRef.current = sphereMaterial;
+    const d20Material = new THREE.LineBasicMaterial({ color: darkMode ? 0xfec800 : 0x58c4dc });
+    d20MaterialRef.current = d20Material;
 
     // Geometry
-    const cube = new THREE.LineSegments(
-      new THREE.EdgesGeometry(new THREE.BoxGeometry(3, 3, 3)),
-      cubeMaterial
+    const sphere = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.SphereGeometry(2, 8, 12)),
+      sphereMaterial
     );
-    const diamond = new THREE.LineSegments(
-      new THREE.EdgesGeometry(new THREE.OctahedronGeometry(1.25, 0)),
-      diamondMaterial
+    sphereRef.current = sphere;
+    scene.add(sphere);
+    const d20 = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(3, 0)),
+      d20Material
     );
-    cubeRef.current = cube;
-    diamondRef.current = diamond;
-
-    scene.add(cube);
-    scene.add(diamond);
+    d20Ref.current = d20;
+    scene.add(d20);
 
     const animate = () => {
       const speedMultiplier = hovered ? 3 : 1;
 
-      if (diamondRef.current) {
-        diamondRef.current.rotation.y += 0.03 * speedMultiplier;
-        diamondRef.current.position.y = Math.sin(clockRef.current.getElapsedTime() * 2) * 0.2;
-      }
-
-      if (cubeRef.current) {
-        cubeRef.current.rotation.y -= 0.01 * speedMultiplier;
+      if (sphereRef.current) {
+        sphereRef.current.rotation.y -= 0.005 * speedMultiplier;
+        d20Ref.current.rotation.x -= 0.01 * speedMultiplier;
+        d20Ref.current.rotation.y -= 0.01 * speedMultiplier;
+        sphereRef.current.scale.y = 0.5 + (3 * (Math.sin(clockRef.current.getElapsedTime()) * 0.1));
+        sphereRef.current.scale.z = 0.5 + (3 * (Math.sin(clockRef.current.getElapsedTime()) * 0.1));
+        sphereRef.current.scale.x = 0.5 + (3 * (Math.sin(clockRef.current.getElapsedTime()) * 0.1));
       }
 
       renderer.render(scene, camera);
@@ -97,14 +96,13 @@ export function Cube({ darkMode }: CubeProps) {
 
   // 🎨 Update material color on darkMode change
   useEffect(() => {
-    if (cubeMaterialRef.current) {
-      cubeMaterialRef.current.color.set(darkMode ? 0xf6f3f0 : 0x0f0f0f);
-      cubeMaterialRef.current.needsUpdate = true;
+    if (sphereMaterialRef.current) {
+      sphereMaterialRef.current.color.set(darkMode ? 0xf6f3f0 : 0x0f0f0f);
+      sphereMaterialRef.current.needsUpdate = true;
     }
-
-    if (diamondMaterialRef.current) {
-      diamondMaterialRef.current.color.set(darkMode ? 0xfec800 : 0x0036fe);
-      diamondMaterialRef.current.needsUpdate = true;
+    if (d20MaterialRef.current) {
+      d20MaterialRef.current.color.set(darkMode ? 0xfec800 : 0x0036fe);
+      d20MaterialRef.current.needsUpdate = true;
     }
   }, [darkMode]);
 

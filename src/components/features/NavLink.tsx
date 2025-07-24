@@ -35,15 +35,17 @@ export function NavLink({ href, linkText }: LinkProps) {
   // IntersectionObserver for active section
   useEffect(() => {
     const sectionElements = document.querySelectorAll("section[id]");
+
     const observerOptions = {
       root: null,
       rootMargin: "0px",
-      threshold: 0.5, // Trigger when 50% of the section is visible
+      threshold: 0.3, // Trigger when 50% of the section is visible
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
+    
           const id = entry.target.getAttribute("id");
           if (id) {
             setActiveSection(id);
@@ -63,11 +65,10 @@ export function NavLink({ href, linkText }: LinkProps) {
     <a
       href={`#${href}`}
       onClick={(e) => handleScroll(e, href)}
-      className={`hover:bg-bee hover:text-midnight px-2 transition-all duration-500 ${
-        activeSection === href
+      className={`hover:bg-water hover:text-eggshell dark:hover:bg-bee dark:hover:text-midnight px-2 transition-all duration-500 ${activeSection === href
           ? "bg-midnight text-eggshell dark:bg-eggshell dark:text-midnight"
           : ""
-      }`}
+        }`}
     >
       {linkText}
     </a>
