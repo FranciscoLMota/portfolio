@@ -7,7 +7,16 @@ export function KeyboardNavigation({ shortcuts }) {
           if (shortcut) {
             const section = document.getElementById(shortcut.section);
             if (section) {
-              section.scrollIntoView({ behavior: "smooth" });
+              console.log(section.clientHeight)
+              if(section.clientHeight < 1000) {
+                console.log("smaller")
+                section.scrollIntoView({ behavior: "smooth", block: "center" });
+                
+              } else {
+                 console.log("bigger")
+                section.scrollIntoView({ behavior: "smooth", block: "start" });
+                
+              }
             }
           }
         };

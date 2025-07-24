@@ -14,7 +14,7 @@ export function Navbar({ darkMode, setDarkMode} : navProps) {
   const navlinks = [
     { href: "hero", text: "[H]ome" },
     { href: "about", text: "[A]bout" },
-    { href: "experience", text: "e[X]perience" },
+    { href: "experience", text: "[E]xperience" },
     { href: "projects", text: "[P]rojects" },
     { href: "contact", text: "[C]ontact" }
   ];

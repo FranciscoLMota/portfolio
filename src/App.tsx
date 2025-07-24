@@ -17,7 +17,7 @@ function App() {
   const shortcuts = [
     { key: "h", section: "hero" },
     { key: "a", section: "about" },
-    { key: "x", section: "experience" },
+    { key: "e", section: "experience" },
     { key: "p", section: "projects" },
     { key: "c", section: "contact" },
   ];
@@ -57,10 +57,7 @@ function App() {
       <KeyboardNavigation shortcuts={shortcuts} />
       <div className="bg-eggshell dark:bg-midnight transition-all duration-500 font-jet">
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-
         <FallingText darkMode={darkMode} font={font} />
-
-
         <About darkMode={darkMode} font={font}/>
         <Experience darkMode={darkMode} />
         <Projects />
