@@ -63,7 +63,7 @@ export function NavLink({ href, linkText }: LinkProps) {
     <a
       href={`#${href}`}
       onClick={(e) => handleScroll(e, href)}
-      className={`hover:bg-bee hover:text-midnight px-2 transition-all duration-500 ${
+      className={`hover:bg-water hover:text-eggshell dark:hover:bg-bee dark:hover:text-midnight px-2 transition-all duration-500 ${
         activeSection === href
           ? "bg-midnight text-eggshell dark:bg-eggshell dark:text-midnight"
           : ""
