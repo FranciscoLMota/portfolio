@@ -86,7 +86,9 @@ export function Experience({ darkMode }: experienceProps) {
             EXPERIENCE
           </h1>
           <span className="text-md">
-            I've been lucky enough to work in some really cool companies and study at some pretty nice places! Maybe yours will be the next one!
+            I've had the chance to work with some amazing teams at companies doing meaningful and creative work, and to study at institutions that really pushed me to grow. 
+            <br /><br />
+            Along the way, I've picked up valuable experience in development, design, and problem-solving, and learned how to collaborate, adapt, and build things that make a difference. I'm always up for the next challenge! Maybe your company will be the next exciting chapter!
           </span>
           <br />
           <br />

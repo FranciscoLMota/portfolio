@@ -15,7 +15,7 @@ export function Navbar({ darkMode, setDarkMode }: navProps) {
     { href: "hero", text: "[H]ome" },
     { href: "about", text: "[A]bout" },
     { href: "experience", text: "[E]xperience" },
-    { href: "projects", text: "[P]rojects" },
+    { href: "stack", text: "[S]tacks" },
     { href: "contact", text: "[C]ontact" }
   ];
 

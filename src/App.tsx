@@ -7,7 +7,7 @@ import { FontLoader } from "./components/lib/three/loaders/FontLoader";
 import { Font } from "three/examples/jsm/Addons.js";
 import { Navbar } from "./components/sections/Navbar";
 import { About } from "./components/sections/About";
-import { Projects } from "./components/sections/Projects";
+import { Stack } from "./components/sections/Stack";
 import { Contact } from "./components/sections/Contact";
 import { FallingText } from "./components/threejs/FallingText";
 import { Experience } from "./components/sections/Experience";
@@ -18,7 +18,7 @@ function App() {
     { key: "h", section: "hero" },
     { key: "a", section: "about" },
     { key: "e", section: "experience" },
-    { key: "p", section: "projects" },
+    { key: "s", section: "stack" },
     { key: "c", section: "contact" },
   ];
 
@@ -60,7 +60,7 @@ function App() {
         <FallingText darkMode={darkMode} font={font} />
         <About darkMode={darkMode} font={font}/>
         <Experience darkMode={darkMode} />
-        <Projects />
+        <Stack darkMode={darkMode} />
         <Contact darkMode={darkMode} />
 
       </div>
