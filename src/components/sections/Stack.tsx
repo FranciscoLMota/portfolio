@@ -105,7 +105,7 @@ export function Stack({ darkMode }: StackProps) {
                       <li className="list-none" key={name}>
                         |- {name}
                         {frameworks && frameworks.length > 0 && (
-                          <ul className="pl-6 text-gray-700 dark:text-gray-400">
+                          <ul className="pl-6 text-gray-500 dark:text-gray-400">
                             {frameworks.map((fw) => (
                               <li className="list-none" key={fw}>
                                 |- {fw}
