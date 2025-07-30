@@ -74,7 +74,7 @@ export function Experience({ darkMode }: experienceProps) {
   return (
     <section
       id="experience"
-      className="text-midnight dark:text-eggshell transition-colors duration-500 mt-10 py-15"
+      className="text-midnight dark:text-eggshell transition-colors duration-500 md:mt-10 py-5 md:py-15 px-5"
     >
       <div className="flex flex-col md:flex-row">
         <div className="relative h-[50dvh] md:w-1/3 order-2 md:order-1 sticky top-24">
@@ -82,9 +82,9 @@ export function Experience({ darkMode }: experienceProps) {
         </div>
         <div className="w-full md:w-2/3 mx-auto px-4 sm:px-6 md:px-8 pt-5 order-1 md:order-2">
 
-          <h1 className="flex-initial max-w-4xl text-5xl font-medium tracking-tight my-3 hover:bg-water hover:text-eggshell dark:hover:bg-bee dark:hover:text-midnight">
-            EXPERIENCE
-          </h1>
+           <h1 className="flex-initial max-w-4xl text-5xl font-medium tracking-tight my-3 hover:bg-water hover:text-eggshell dark:hover:bg-bee dark:hover:text-midnight">
+              EXPERIENCE
+            </h1>
           <span className="text-md">
             I've had the chance to work with some amazing teams at companies doing meaningful and creative work, and to study at institutions that really pushed me to grow. 
             <br /><br />

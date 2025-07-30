@@ -45,7 +45,7 @@ export function Stack({ darkMode }: StackProps) {
   return (
     <section
       id="stack"
-      className="text-midnight dark:text-eggshell transition-colors duration-500 mt-10 py-15"
+      className="text-midnight dark:text-eggshell transition-colors duration-500 mt-10 py-5 md:py-15 px-5"
     >
       <div className="flex flex-col md:flex-row">
         <div className="relative h-[50dvh] md:w-1/3 order-2 sticky top-24">
@@ -65,7 +65,7 @@ export function Stack({ darkMode }: StackProps) {
             return (
               <div
                 key={index}
-                className="border-b border-slate-200 transition-all duration-500"
+                className="border-b border-midnight dark:border-eggshell transition-all duration-500"
               >
                 <button
                   onClick={() => toggleAccordion(index)}

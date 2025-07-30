@@ -70,29 +70,6 @@ export function Boxes({ darkMode }: BoxesProps) {
     const spacing = 4;
     const boxGeo = new THREE.BoxGeometry(boxSize * 2, boxSize, boxSize);
 
-    
-    let lastScrollY = window.scrollY;
-
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const delta = currentScrollY - lastScrollY;
-
-      // scroll up = negative delta → pull boxes up
-      // scroll down = positive delta → pull boxes down
-      const direction = delta > 0 ? 1 : -1;
-
-      for (const body of bodies) {
-        body.velocity.y = 8 * direction; // adjust "pull" strength
-      }
-
-      lastScrollY = currentScrollY;
-    };
-
-
-
-    window.addEventListener("scroll", handleScroll);
-
-
     for (let i = 0; i < 3; i++) {
       // Three.js mesh
       const mesh = new THREE.Mesh(boxGeo, material);

@@ -10,7 +10,7 @@ export function Contact({ darkMode }: contactProps) {
     <>
       <section
         id="contact"
-        className="text-midnight dark:text-eggshell transition-colors duration-500 mt-10 py-15"
+        className="text-midnight dark:text-eggshell transition-colors duration-500 md:mt-10 py-5 md:py-15 px-5"
       >
         <div className="flex flex-col md:flex-row ">
           <div className="h-[50dvh] md:w-1/3 order-2 md:order-1">

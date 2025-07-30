@@ -129,12 +129,18 @@ export function FallingText({ darkMode, font }: cubeProps) {
     const text = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
       .split("")
       .sort(() => 0.5 - Math.random());
-    const maxLetters = 30;
+
+    var maxLetters = 30
+    var fontSize = 3
+    if (width < 768) {
+      maxLetters = 20;
+      fontSize = 2;
+    } 
     let letterIndex = 0;
 
     const tempGeo = new TextGeometry("O", {
       font,
-      size: 3,
+      size: fontSize,
       height: 0.2,
     });
     tempGeo.computeBoundingBox();
@@ -147,7 +153,7 @@ export function FallingText({ darkMode, font }: cubeProps) {
       const char = text[letterIndex++ % text.length];
       const textGeo = new TextGeometry(char, {
         font,
-        size: 3,
+        size: fontSize,
         height: 0.2,
       });
       const edges = new EdgesGeometry(textGeo);
@@ -197,6 +203,7 @@ export function FallingText({ darkMode, font }: cubeProps) {
 
       const xWorld = (mouse.x * viewWidth) / 2;
       const yWorld = (mouse.y * viewHeight) / 2;
+
       mouseBody.position.set(xWorld, yWorld, 0);
 
       renderer.render(scene, camera);

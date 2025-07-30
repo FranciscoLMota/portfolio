@@ -81,6 +81,12 @@ export function Initials({ darkMode, font }: initialsProps) {
 
     fShape.position.set(-1.25, 0.5, 0);
     mShape.position.set(1.25, -0.5, 0);
+    const width = container.clientWidth;
+    
+    if (width < 768) {
+      fShape.position.set(-1.75, 0.5, 0);
+      mShape.position.set(1, -0.5, 0);
+    }
 
     fShapeRef.current = fShape;
     mShapeRef.current = mShape;
