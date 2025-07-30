@@ -41,7 +41,7 @@ function App() {
   useEffect(() => {
     const loader = new FontLoader();
     loader.load(
-      "/src/fonts/NippoVariable_Bold.json",
+      "/portfolio/fonts/NippoVariable_Bold.json",
       (loadedFont) => {
         setFont(loadedFont);
       }
