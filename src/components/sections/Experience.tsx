@@ -60,7 +60,7 @@ export function Experience({ darkMode }: experienceProps) {
     }
   ];
 
-  function icons(type) {
+  function icons(type: string) {
     switch(type) {
       case 'job':
         return <SlScreenDesktop />

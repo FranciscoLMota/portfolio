@@ -1,8 +1,12 @@
 import { useEffect } from "react";
 
-export function KeyboardNavigation({ shortcuts }) {
+type KeyboardNavigationProps = {
+  shortcuts: any[]; // Replace `any` with a proper type if known
+};
+
+export function KeyboardNavigation({ shortcuts }: KeyboardNavigationProps) {
     useEffect(() => {
-        const handleKeyPress = (event) => {
+        const handleKeyPress = (event: any) => {
           const shortcut = shortcuts.find(s => s.key.toLowerCase() === event.key.toLowerCase());
           if (shortcut) {
             const section = document.getElementById(shortcut.section);

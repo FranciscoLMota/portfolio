@@ -7,13 +7,13 @@ interface SphereProps {
 
 export function Sphere({ darkMode }: SphereProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer>();
-  const sphereMaterialRef = useRef<THREE.LineBasicMaterial>();
-  const sphereRef = useRef<THREE.LineSegments>();
-  const d20MaterialRef = useRef<THREE.LineBasicMaterial>();
-  const d20Ref = useRef<THREE.LineSegments>();
-  const sceneRef = useRef<THREE.Scene>();
-  const cameraRef = useRef<THREE.PerspectiveCamera>();
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const sphereMaterialRef = useRef<THREE.LineBasicMaterial | null>(null);
+  const sphereRef = useRef<THREE.LineSegments | null>(null);
+  const d20MaterialRef = useRef<THREE.LineBasicMaterial | null>(null);
+  const d20Ref = useRef<THREE.LineSegments | null>(null);
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const clockRef = useRef(new THREE.Clock());
 
   const [hovered, setHovered] = useState(false);
@@ -64,8 +64,10 @@ export function Sphere({ darkMode }: SphereProps) {
 
       if (sphereRef.current) {
         sphereRef.current.rotation.y -= 0.005 * speedMultiplier;
-        d20Ref.current.rotation.x -= 0.01 * speedMultiplier;
-        d20Ref.current.rotation.y -= 0.01 * speedMultiplier;
+        if (d20Ref.current) {
+          d20Ref.current.rotation.x -= 0.01 * speedMultiplier;
+          d20Ref.current.rotation.y -= 0.01 * speedMultiplier; 4
+        }
         sphereRef.current.scale.y = 0.5 + (3 * (Math.sin(clockRef.current.getElapsedTime()) * 0.1));
         sphereRef.current.scale.z = 0.5 + (3 * (Math.sin(clockRef.current.getElapsedTime()) * 0.1));
         sphereRef.current.scale.x = 0.5 + (3 * (Math.sin(clockRef.current.getElapsedTime()) * 0.1));

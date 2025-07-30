@@ -36,7 +36,7 @@ function App() {
     }
   }, [darkMode]);
 
-   const [font, setFont] = useState<Font | null>(null);
+  const [font, setFont] = useState<Font | null>(null);
 
   useEffect(() => {
     const loader = new FontLoader();
@@ -44,10 +44,6 @@ function App() {
       "/src/fonts/NippoVariable_Bold.json",
       (loadedFont) => {
         setFont(loadedFont);
-      },
-      undefined,
-      (error) => {
-        console.error("Error loading font:", error);
       }
     );
   }, []);
@@ -57,8 +53,8 @@ function App() {
       <KeyboardNavigation shortcuts={shortcuts} />
       <div className="bg-eggshell dark:bg-midnight transition-all duration-500 font-jet">
         <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-        <FallingText darkMode={darkMode} font={font} />
-        <About darkMode={darkMode} font={font}/>
+        <FallingText darkMode={darkMode} font={font!} />
+        <About darkMode={darkMode} font={font!} />
         <Experience darkMode={darkMode} />
         <Stack darkMode={darkMode} />
         <Contact darkMode={darkMode} />

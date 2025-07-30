@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+// @ts-ignore
 import { TextGeometry } from "../lib/three/geometries/TextGeometry";
 import {
   Scene,

@@ -1,5 +1,6 @@
 import * as THREE from "three";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+// @ts-ignore
 import { TextGeometry } from "../lib/three/geometries/TextGeometry";
 import { Font } from "three/examples/jsm/Addons.js";
 
@@ -10,7 +11,7 @@ interface initialsProps {
 
 export function Initials({ darkMode, font }: initialsProps) {
 
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const initialsMaterialRef = useRef<THREE.LineBasicMaterial | null>(null);
   const fMaterialRef = useRef<THREE.LineBasicMaterial | null>(null);
   const fShapeRef = useRef<THREE.LineSegments>(null);

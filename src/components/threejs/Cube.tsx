@@ -6,14 +6,14 @@ interface CubeProps {
 }
 
 export function Cube({ darkMode }: CubeProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const rendererRef = useRef<THREE.WebGLRenderer>();
-  const cubeMaterialRef = useRef<THREE.LineBasicMaterial>();
-  const diamondMaterialRef = useRef<THREE.LineBasicMaterial>();
-  const cubeRef = useRef<THREE.LineSegments>();
-  const diamondRef = useRef<THREE.LineSegments>();
-  const sceneRef = useRef<THREE.Scene>();
-  const cameraRef = useRef<THREE.PerspectiveCamera>();
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const cubeMaterialRef = useRef<THREE.LineBasicMaterial | null>(null);
+  const diamondMaterialRef = useRef<THREE.LineBasicMaterial | null>(null);
+  const cubeRef = useRef<THREE.LineSegments | null>(null);
+  const diamondRef = useRef<THREE.LineSegments | null>(null);
+  const sceneRef = useRef<THREE.Scene | null>(null);
+  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const clockRef = useRef(new THREE.Clock());
 
   const [hovered, setHovered] = useState(false);

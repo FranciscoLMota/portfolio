@@ -1,5 +1,5 @@
 import { Initials } from "../threejs/Initials";
-
+import { Font } from "three/examples/jsm/Addons.js";
 
 interface aboutProps {
   darkMode: boolean;
