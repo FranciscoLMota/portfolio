@@ -10,6 +10,10 @@
   --font-step: "Stepalange Short", sans-serif; 
   --font-jet: "JetBrainsMono", sans-serif; 
 }
+html {
+    cursor: url(../public/cursor/cursor.cur), auto;
+}
+
 
 @font-face {
   font-family: 'Stepalange';
