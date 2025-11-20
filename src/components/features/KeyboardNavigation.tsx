@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 type KeyboardNavigationProps = {
-  shortcuts: any[]; // Replace `any` with a proper type if known
+  shortcuts: any[];
 };
 
 export function KeyboardNavigation({ shortcuts }: KeyboardNavigationProps) {

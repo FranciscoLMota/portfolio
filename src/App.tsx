@@ -11,6 +11,7 @@ import { Stack } from "./components/sections/Stack";
 import { Contact } from "./components/sections/Contact";
 import { FallingText } from "./components/threejs/FallingText";
 import { Experience } from "./components/sections/Experience";
+import { Project } from "./components/sections/Project";
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -19,6 +20,7 @@ function App() {
     { key: "a", section: "about" },
     { key: "e", section: "experience" },
     { key: "s", section: "stack" },
+    { key: "p", section: "project" },
     { key: "c", section: "contact" },
   ];
 
@@ -57,6 +59,7 @@ function App() {
         <About darkMode={darkMode} font={font!} />
         <Experience darkMode={darkMode} />
         <Stack darkMode={darkMode} />
+        <Project darkMode={darkMode} />
         <Contact darkMode={darkMode} />
 
       </div>
