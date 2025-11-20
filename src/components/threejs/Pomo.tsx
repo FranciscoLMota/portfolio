@@ -51,7 +51,7 @@ export function Pomo() {
       pivotRef.current = pivot;
 
       model.traverse((child) => {
-        if (child.isMesh) {
+        if (child instanceof THREE.Mesh) {
           let color = 0xffffff;
           if (child.name === "greenPart") color = 0x00AE82;
           if (child.name === "redPart") color = 0xEE4848;
@@ -66,7 +66,7 @@ export function Pomo() {
           flatMesh.rotation.copy(child.rotation);
           flatMesh.scale.copy(child.scale);
 
-          child.parent.add(flatMesh);
+          child.parent!.add(flatMesh);
           child.visible = false; // hide original mesh
         }
       });

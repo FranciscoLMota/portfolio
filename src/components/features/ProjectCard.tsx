@@ -33,11 +33,11 @@ export function ProjectCard({ href, title, description, display, tags }: Project
       </div>
       <div className="px-6 py-4 border-t border-t-midnight dark:border-t-white">
         <div className="font-bold text-xl mb-2">{title}</div>
-        <p className="mb-4 text-base font-medium text-gray-700 dark:text-gray-400">
+        <p className="mb-2 text-base font-medium text-gray-700 dark:text-gray-400">
           {description}
         </p>
       </div>
-      <div className="px-6 pt-4 pb-2">
+      <div className="px-6 pb-2">
         {tags.map((text, i) => (
           <span
             key={i}

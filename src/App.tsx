@@ -59,7 +59,7 @@ function App() {
         <About darkMode={darkMode} font={font!} />
         <Experience darkMode={darkMode} />
         <Stack darkMode={darkMode} />
-        <Project darkMode={darkMode} />
+        <Project />
         <Contact darkMode={darkMode} />
 
       </div>
